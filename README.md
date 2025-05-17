@@ -1,70 +1,279 @@
-# Getting Started with Create React App
+📌 PHASE 1: INITIAL SETUP (Both Sides)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+STEP 1: Create a GitHub Repo
+Create a repo called promanage-fullstack (or two separate repos: promanage-frontend and promanage-backend)
 
-## Available Scripts
+STEP 2: Initialize Backend Project
 
-In the project directory, you can run:
+Create backend folder:
+mkdir promanage-backend && cd promanage-backend
 
-### `npm start`
+Initialize Node:
+npm init -y
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Install base dependencies:
+npm install express mysql2 sequelize dotenv cors
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Install dev tools:
+npm install --save-dev nodemon
 
-### `npm test`
+Setup Sequelize:
+npx sequelize-cli init
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create MySQL DB: promanage_dev (via phpMyAdmin or MySQL CLI)
 
-### `npm run build`
+Set up .env file for DB config
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+STEP 3: Initialize Frontend Project
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Create frontend folder:
+npx create-react-app promanage-frontend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install tools:
+npm install axios react-router-dom react-icons
 
-### `npm run eject`
+Setup base folder structure: /components, /pages, /api, /contexts
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+───────────────────────────────────────
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+📌 PHASE 2: USER AUTHENTICATION (Frontend + Backend)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+BACKEND:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Create User model (Sequelize): name, email, password, role
 
-## Learn More
+Add bcrypt for password hashing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Setup JWT auth (access + refresh tokens)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Create login, register APIs
 
-### Code Splitting
+Add auth middleware to protect routes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+FRONTEND:
 
-### Analyzing the Bundle Size
+Create login and register pages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Use Axios to call backend
 
-### Making a Progressive Web App
+Store JWT (preferably in memory or localStorage)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Setup React Context for global auth state
 
-### Advanced Configuration
+Protect dashboard route using a PrivateRoute component
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Concepts covered:
 
-### Deployment
+JWT authentication
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Protected routes
 
-### `npm run build` fails to minify
+React Context
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Form handling + validation
+
+───────────────────────────────────────
+
+📌 PHASE 3: USERS, TEAMS, ROLES (RBAC)
+
+BACKEND:
+
+Create Team model
+
+Many-to-many: Users ↔ Teams
+
+Create TeamMember join table
+
+Implement role-based access (Admin, Team Lead, Member)
+
+APIs: create/join/leave team, list team members
+
+FRONTEND:
+
+Team creation form
+
+Show teams user belongs to
+
+Show/hide UI by role
+
+Add role-based guards on frontend
+
+Concepts covered:
+
+MySQL associations (Sequelize)
+
+Role-based access control (RBAC)
+
+React conditional rendering
+
+───────────────────────────────────────
+
+📌 PHASE 4: PROJECTS & TASKS
+
+BACKEND:
+
+Create Project and Task models
+
+Relationships:
+
+Team → Projects (1:m)
+
+Project → Tasks (1:m)
+
+Task → User (assignedTo)
+
+CRUD APIs for Projects and Tasks
+
+Add search, filter, pagination
+
+FRONTEND:
+
+Project list page
+
+Task board (Kanban-style)
+
+Assign task to users
+
+Pagination and filter UI
+
+Concepts covered:
+
+React state and props
+
+CRUD operations
+
+Pagination and filtering
+
+Nested routes and dynamic routing
+
+───────────────────────────────────────
+
+📌 PHASE 5: FILE UPLOADS & COMMENTS
+
+BACKEND:
+
+Add Multer for file upload
+
+Attachments linked to tasks
+
+Comments model: Task ↔ User
+
+APIs: Upload file, post comment, list comments
+
+FRONTEND:
+
+File upload UI
+
+Comments section under each task
+
+Preview/download attachments
+
+Concepts covered:
+
+File uploads (Multer)
+
+useRef for file inputs
+
+FormData handling in React
+
+───────────────────────────────────────
+
+📌 PHASE 6: REAL-TIME UPDATES (Socket.io)
+
+BACKEND:
+
+Install socket.io
+
+Emit events on task updates, new comments
+
+FRONTEND:
+
+Connect to socket server
+
+Listen for task updates or comments
+
+Update UI live without reload
+
+Concepts covered:
+
+WebSockets (Socket.io)
+
+useEffect for subscriptions
+
+Real-time data flow
+
+───────────────────────────────────────
+
+📌 PHASE 7: ERROR HANDLING, LOGGING, SECURITY
+
+BACKEND:
+
+Global error handler
+
+Winston for logging
+
+Helmet, CORS, input validation (Joi)
+
+FRONTEND:
+
+Show toast messages for API errors
+
+Form validation
+
+Error boundaries (React)
+
+Concepts covered:
+
+Centralized error handling
+
+Secure headers
+
+Client-side feedback
+
+───────────────────────────────────────
+
+📌 PHASE 8: TESTING
+
+BACKEND:
+
+Install Jest + Supertest
+
+Write tests for auth, task APIs
+
+FRONTEND:
+
+React Testing Library
+
+Test login form, task form, API mocking
+
+Concepts covered:
+
+Unit and integration tests
+
+Mocking API calls
+
+───────────────────────────────────────
+
+📌 PHASE 9: DEPLOYMENT
+
+BACKEND:
+
+Host on Render or Railway
+
+Use PM2 for production
+
+Use .env variables
+
+FRONTEND:
+
+Build and deploy to Netlify or Vercel
+
+Connect to backend via env variables
+
+Concepts covered:
+
+Environment management
+
+Deployment and CI basics
+
+───────────────────────────────────────
